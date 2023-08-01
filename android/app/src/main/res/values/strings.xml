@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BucketPlace</string>
+    <string name="kakao_app_key">{f32743b6443d3dc5109f6780061865cd}</string>
 </resources>
