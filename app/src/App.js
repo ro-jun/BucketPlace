@@ -7,6 +7,7 @@ import Root from '../navigation/Root';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './views/screens/SignInScreen';
 import SignUpScreen from './views/screens/SignUpScreen';
+import Sign from './views/screens/Sign';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -28,11 +29,7 @@ export default function App() {
 
   return (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{header: () => null}}>
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-      </Stack.Navigator>
-        {/* <Root /> */}
+        <Sign />
       </NavigationContainer>
   );
 }

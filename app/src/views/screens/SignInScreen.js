@@ -5,8 +5,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styled from "styled-components/native";
 
-function SignInScreen() {
+const Btn = styled.TouchableOpacity``;
+const Btn2 = styled.TouchableOpacity``;
+
+function SignInScreen({navigation: { navigate }}) {
     return (
         <SafeAreaView style = {{paddingHorizontal: 20, flex:1, backgroundColor:COLORS.white}} >
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -16,10 +20,10 @@ function SignInScreen() {
                 </View>
                 <View style={{marginTop: 70}}>
                     <Text style={{fontSize: 27, fontWeight: 'bold', color: COLORS.dark}}>
-                        Welcome Back,
+                        안녕하세요
                     </Text>
                     <Text style={{fontSize: 19, fontWeight: 'bold', color: COLORS.light}}>
-                        Sign in to continue
+                        로그인을 진행해주세요
                     </Text>
                 </View>     
                 <View style={{marginTop: 20}}>
@@ -46,7 +50,9 @@ function SignInScreen() {
                             />
                         </View>
                         <View style = {STYLES.btnPrimary}>
-                            <Text style = {{color:COLORS.white, fontWeight:"bold", fontSize: 18}}>Sign In</Text>
+                            <Btn2 onPress={() => navigate("Root", {screen:"Tabs"})}>
+                            <Text style = {{color:COLORS.white, fontWeight:"bold", fontSize: 18}}>로그인</Text>
+                            </Btn2>
                         </View>
                         <View style = {{marginVertical: 20, flexDirection:"row", justifyContent: "center", alignItems:"center"}}>
                             <View style = {STYLES.line}></View>
@@ -67,9 +73,9 @@ function SignInScreen() {
                         <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
                             Don`t have an account ?
                         </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Btn onPress={() => navigate('SignUp', {screen:"SignUp"})}>
                             <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>Sign up</Text>
-                        </TouchableOpacity>
+                        </Btn>
                     </View>
                 </ScrollView>
         </SafeAreaView>
