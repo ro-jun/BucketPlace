@@ -1,14 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, useColorScheme } from 'react-native';
-import Home from '../screens/Home';
-import Footprints from '../screens/Footprints';
-import Write from '../screens/Write';
-import Mypage from '../screens/Mypage';
-import BLACK_COLOR from '../color';
-import YELLOW_COLOR from '../color';
+import Home from '../src/views/screens/Home';
+import Footprints from '../src/views/screens/Footprints';
+import Write from '../src/views/screens/Write';
+import Mypage from '../src/views/screens/Mypage';
+import BLACK_COLOR from '../src/consts/color';
+import YELLOW_COLOR from '../src/consts/color';
 import { Ionicons } from "@expo/vector-icons";
 import Stack from "./Stack"
-import SigninScreen from "../app/src/views/screens/SignInScreen"
 
 const Tab = createBottomTabNavigator();
 
