@@ -5,16 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-<<<<<<< HEAD
-
-const SignUpScreen = ({navigation}) => {
-=======
 import styled from "styled-components/native";
 
 const Btn = styled.TouchableOpacity``;
 
 const SignUpScreen = ({navigation: { navigate }}) => {
->>>>>>> ff07de43bd4456e8238d27dd86ab372e4993d62f
   return (
     <SafeAreaView
       style={{paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.white}}>
@@ -122,19 +117,11 @@ const SignUpScreen = ({navigation: { navigate }}) => {
           <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
             Already have an account ?
           </Text>
-<<<<<<< HEAD
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>
-              Sign in
-            </Text>
-          </TouchableOpacity>
-=======
           <Btn onPress={() => navigate('SignIn', {screen:"SignIn"})}>
             <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>
               Sign in
             </Text>
           </Btn>
->>>>>>> ff07de43bd4456e8238d27dd86ab372e4993d62f
         </View>
       </ScrollView>
     </SafeAreaView>
