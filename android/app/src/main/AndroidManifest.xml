@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.bucketplace">
+  package="com.BucketPlace">
 
+  
   <uses-permission android:name="android.permission.INTERNET"/>
   <!-- OPTIONAL PERMISSIONS, REMOVE WHATEVER YOU DO NOT NEED -->
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -9,7 +10,8 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <!-- END OPTIONAL PERMISSIONS -->
-
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <queries>
     <!-- Support checking for http(s) links via the Linking API -->
     <intent>
@@ -18,7 +20,6 @@
       <data android:scheme="https" />
     </intent>
   </queries>
-   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />  
 
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="YOUR-APP-URL-HERE"/>
@@ -34,13 +35,13 @@
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
-    <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
+    <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:host="oauth" 
-              android:scheme="kakao92462406e41e771f7c83aefd2167c49c" />
+        <data android:host="oauth" android:scheme="kakao{네이티브 앱 키}" />
       </intent-filter>
     </activity>
   </application>
