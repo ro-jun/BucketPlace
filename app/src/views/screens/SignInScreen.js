@@ -9,6 +9,7 @@ import styled from "styled-components/native";
 
 const Btn = styled.TouchableOpacity``;
 const Btn2 = styled.TouchableOpacity``;
+const Btn3 = styled.TouchableOpacity``;
 
 function SignInScreen({navigation: { navigate }}) {
     return (
@@ -59,9 +60,11 @@ function SignInScreen({navigation: { navigate }}) {
                             <Text style = {{fontWeight: "bold", marginHorizontal: 5}}>OR</Text>
                             <View style = {STYLES.line}></View>
                         </View>
+                            <Btn3 onPress={() => navigate('kakaologin')}>
                             <View style={STYLES.kakaologinbtn}>
                                 <Image style={STYLES.btnImage} source={require('../../assets/kakao_login.png')}/>
                             </View>
+                            </Btn3>
                     </View>
                     <View style={{
                             flexDirection: 'row',
