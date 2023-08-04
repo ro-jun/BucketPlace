@@ -26,7 +26,7 @@ export default function App() {
   };
 
 
-
+//Sign.js 불러오기
   return (
       <NavigationContainer>
         <Sign />

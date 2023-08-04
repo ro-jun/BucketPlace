@@ -7,7 +7,6 @@ import Mypage from '../src/views/screens/Mypage';
 import BLACK_COLOR from '../src/consts/color';
 import YELLOW_COLOR from '../src/consts/color';
 import { Ionicons } from "@expo/vector-icons";
-import Stack from "./Stack"
 
 const Tab = createBottomTabNavigator();
 
