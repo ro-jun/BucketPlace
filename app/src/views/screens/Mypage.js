@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 import Image from "./image";
-import { View, Text, StyleSheet } from "react-native"; // 필요한 컴포넌트들 import
+import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-// ...
- 
+
 const Mypage = () => {
-  const [photo,  setPhoto] = useState(undefined);
+  const [photo, setPhoto] = useState(undefined);
+
   return (
-    <View>
-        <Text style={styles.text}>내 프로필</Text>
-        <Image url={photo} onChangePhoto={setPhoto}/>
+    <View style={styles.container}>
+      <Text style={styles.heading}>내 프로필</Text>
+      <Image url={photo} onChangePhoto={setPhoto} />
     </View>
-  ); 
+  );
 };
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize:25,
-    }
-})
- 
-export default Mypage;
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f2f2f2",
+  },
+  heading: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
+    marginTop: 40,
+  },
+});
 
+export default Mypage;

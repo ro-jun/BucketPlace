@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { View, Image, TouchableOpacity, Text, TextInput } from "react-native";
+import { View, Image, TouchableOpacity, Text, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import styled from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
+
+const Btn = styled.TouchableOpacity``;
 
 const ImageComponent = ({ url, onChangePhoto }) => {
-  const [userBio, setUserBio] = useState(''); // 사용자 한줄 소개 상태 추가
+  const [userBio, setUserBio] = useState('');
+  const navigation = useNavigation();
 
   const _handlePhotoBtnPress = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -14,30 +19,87 @@ const ImageComponent = ({ url, onChangePhoto }) => {
       quality: 1,
     });
 
-    if (!result.cancelled && result.assets.length > 0) { // assets 배열을 사용하여 접근
+    if (!result.canceled && result.assets.length > 0) {
       onChangePhoto(result.assets[0].uri);
     }
   };
 
+  const handleNavigateToPost = () => {
+    navigation.navigate('post', {screen:'post'}); // 'PostScreen'으로 이동
+  };
+
   return (
-    <View>
-      <Image source={{ uri: url }} style={{ width: 150, height: 150 }} />
-      <TouchableOpacity onPress={_handlePhotoBtnPress}>
-        <Ionicons name="add" size={30} color="black" />
-      </TouchableOpacity>
-      {/* 이름과 한줄 소개 입력 */}
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        {url ? (
+          <Image source={{ uri: url }} style={styles.image} />
+        ) : (
+          <TouchableOpacity onPress={_handlePhotoBtnPress} style={styles.imagePlaceholder}>
+            <Ionicons name="add" size={30} color="black" />
+            <Text style={styles.placeholderText}>사진 추가</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <TextInput
-        style={{ fontSize: 20, paddingHorizontal: 10, paddingVertical: 10, borderRadius: 5 }}
+        style={styles.input}
         value={userBio}
         onChangeText={setUserBio}
-        placeholder="한줄 소개를 입력하세요."
+        placeholder="한줄 소개"
       />
-      {/* 게시글 확인 메뉴 */}
-      <TouchableOpacity style={{ backgroundColor: '#f2f2f2', paddingHorizontal: 10, paddingVertical: 10, borderRadius: 5 }}>
-        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>내 게시글</Text>
+
+      <TouchableOpacity style={styles.button} onPress={handleNavigateToPost}>
+        <Text style={styles.buttonText}>내 게시글</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+  },
+  imageContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  imagePlaceholder: {
+    width: 150,
+    height: 150,
+    marginRight: 10,
+    borderRadius: 5,
+    backgroundColor: "#f2f2f2",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  placeholderText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  input: {
+    fontSize: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+});
 
 export default ImageComponent;
