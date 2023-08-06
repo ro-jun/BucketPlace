@@ -30,15 +30,24 @@ const PrintStart = () => {
           setLocation(location.coords);
 
           // 경로 업데이트
-          setRouteCoordinates((prevCoordinates) => [
+        setRouteCoordinates((prevCoordinates) => {
+          const newCoordinates = [
             ...prevCoordinates,
             {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             },
-          ]);
-        }
-      );
+          ];
+
+          // 경로 좌표를 로그로 출력 sql 연동 위치
+          console.log('New Coordinates:', newCoordinates);
+          console.log('New Latitude:', location.coords.latitude);
+          console.log('New Longitude:', location.coords.longitude);
+
+          return newCoordinates;
+        });
+      }
+    );
     } catch (error) {
       console.error('현재 위치를 가져오는데 실패했습니다:', error);
     }
