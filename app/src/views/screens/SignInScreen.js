@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, TextInput, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput, Image, Alert} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import COLORS from '../../consts/color';
@@ -12,6 +12,35 @@ const Btn2 = styled.TouchableOpacity``;
 const Btn3 = styled.TouchableOpacity``;
 
 function SignInScreen({navigation: { navigate }}) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch('http://10.0.2.2:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) { // 서버가 성공 응답을 보냈다면
+                navigate("Root", {screen:"Tabs"});
+            } else {
+                Alert.alert("Error", "Invalid email or password!");
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            Alert.alert("Error", "Something went wrong!");
+        } 
+    };
+
     return (
         <SafeAreaView style = {{paddingHorizontal: 20, flex:1, backgroundColor:COLORS.white}} >
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -35,8 +64,13 @@ function SignInScreen({navigation: { navigate }}) {
                             color={COLORS.light}
                             styles={STYLES.inputIcon}
                         />
-                        <TextInput placeholder="Email" style={STYLES.input}/>
-                    </View>
+                        <TextInput 
+                                placeholder="Email" 
+                                style={STYLES.input}
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
+                            />
+                        </View>
                         <View style={STYLES.inputcontainer}>
                             <Icon
                                 name="lock-outline"
@@ -48,11 +82,13 @@ function SignInScreen({navigation: { navigate }}) {
                                 placeholder="password" 
                                 style={STYLES.input}
                                 secureTextEntry
+                                value={password}
+                                onChangeText={(text) => setPassword(text)}
                             />
                         </View>
                         <View style = {STYLES.btnPrimary}>
-                            <Btn2 onPress={() => navigate("Root", {screen:"Tabs"})}>
-                            <Text style = {{color:COLORS.white, fontWeight:"bold", fontSize: 18}}>로그인</Text>
+                            <Btn2 onPress={handleLogin}>
+                                <Text style = {{color:COLORS.white, fontWeight:"bold", fontSize: 18}}>로그인</Text>
                             </Btn2>
                         </View>
                         <View style = {{marginVertical: 20, flexDirection:"row", justifyContent: "center", alignItems:"center"}}>
