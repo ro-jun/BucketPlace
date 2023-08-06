@@ -4,6 +4,7 @@ import Home from '../src/views/screens/Home';
 import Footprints from '../src/views/screens/Footprints';
 import Write from '../src/views/screens/Write';
 import Mypage from '../src/views/screens/Mypage';
+import PrintStart from '../src/views/screens/PrintStart'; // PrintStart 스크린 import
 import BLACK_COLOR from '../src/consts/color';
 import YELLOW_COLOR from '../src/consts/color';
 import { Ionicons } from "@expo/vector-icons";
@@ -66,6 +67,14 @@ const Tabs = () => {
                     return <Ionicons name="person" size={24} color="black" />
              } 
              }} />
+        {/* PrintStart 스크린 추가 */}
+        <Tab.Screen
+            name="PrintStart"
+            component={PrintStart}
+            options={{
+              tabBarButton: () => null, // PrintStart 스크린은 탭 바에 보이지 않도록 tabBarButton을 null로 설정
+            }}
+          />
     </Tab.Navigator>
     );
 }

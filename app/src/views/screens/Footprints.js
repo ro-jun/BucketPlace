@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -63,6 +64,32 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
+  
+  // "리스트 닫기" 버튼 스타일
+  closeListButton: {
+    alignSelf: 'center', // 가로 방향으로 중앙 정렬
+    marginTop: 10, // 버튼과 리스트 사이의 간격 조정
+    padding: 8,
+    backgroundColor: '#007AFF', // 버튼 배경색 (예시로 빨간색 사용)
+    borderRadius: 8,
+  },
+  closeListButtonText: {
+    color: '#fff', // 버튼 텍스트 색상
+    textAlign: 'center',
+  },
+  // "기록시작" 버튼 스타일
+  startRecordingButton: {
+    position: 'absolute', // 절대 위치로 설정
+    bottom: 16, // 아래에서 16pt 떨어진 위치
+    right: 16, // 오른쪽에서 16pt 떨어진 위치
+    padding: 8,
+    backgroundColor: '#007AFF', // 버튼 배경색
+    borderRadius: 8,
+  },
+  startRecordingButtonText: {
+    color: '#fff', // 버튼 텍스트 색상
+    textAlign: 'center',
+  },
 });
 
 const Footprints = () => {
@@ -72,6 +99,15 @@ const Footprints = () => {
   const [showList, setShowList] = useState(false); // 검색 결과 리스트를 보여줄지 여부를 저장하는 state 변수
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 마커 정보를 저장하는 state 변수
   const mapRef = useRef(null);
+
+  // React Navigation Hook을 사용하여 navigation 객체 가져오기
+  const navigation = useNavigation();
+
+  // "기록시작" 버튼을 누를 때 실행되는 함수
+  const handleStartRecording = () => {
+    // PrintStart 컴포넌트로 넘어가기
+    navigation.navigate('PrintStart');
+  };
 
   const handleSearch = () => {
     const googleMapApiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchText}&key=AIzaSyDj6P9AGKAATc2EIFxhUvgyYvnTpZJZPik`;
@@ -142,6 +178,19 @@ const Footprints = () => {
     }
   };
 
+  const handleListItemPress = (place) => {
+    setSelectedPlace(place);
+    const latitude = place.geometry.location.lat;
+    const longitude = place.geometry.location.lng;
+    mapRef.current.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+    setShowList(false); // 장소 선택 후 리스트 숨기기
+  };
+
   const handleSearchButtonPress = () => {
     handleSearch();
     setShowList(false);
@@ -149,6 +198,10 @@ const Footprints = () => {
 
   const handleSearchInputFocus = () => {
     setShowList(true);
+  };
+
+  const handleCloseListButtonPress = () => {
+    setShowList(false);
   };
 
   return (
@@ -167,18 +220,26 @@ const Footprints = () => {
         </TouchableOpacity>
       </View>
       {showList && searchResults.length > 0 && (
-        <FlatList
-          data={searchResults}
-          keyExtractor={(item) => item.place_id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => handleListItemPress(item)}
-            >
-              <Text>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        />
+        <React.Fragment>
+          <FlatList
+            data={searchResults}
+            keyExtractor={(item) => item.place_id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.listItem}
+                onPress={() => handleListItemPress(item)}
+              >
+                <Text>{item.name}</Text>
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity
+            style={styles.closeListButton} // "리스트 닫기" 버튼 스타일
+            onPress={handleCloseListButtonPress} // 버튼을 누르면 handleCloseListButtonPress 함수 호출
+          >
+            <Text style={styles.closeListButtonText}>리스트 닫기</Text>
+          </TouchableOpacity>
+        </React.Fragment>
       )}
       <MapView
         ref={mapRef}
@@ -214,6 +275,13 @@ const Footprints = () => {
           </Marker>
         ))}
       </MapView>
+      {/* "기록시작" 버튼 */}
+      <TouchableOpacity
+        style={styles.startRecordingButton}
+        onPress={handleStartRecording}
+      >
+        <Text style={styles.startRecordingButtonText}>기록시작</Text>
+      </TouchableOpacity>
     </View>
   );
 };
