@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "BucketPlace",
+    "slug": "BucketPlace",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "BucketPlace"
+}
