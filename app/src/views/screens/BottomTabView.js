@@ -100,10 +100,17 @@ const BottomTabView = () => {
             if(route.name === "Posts"){
                 iconName = focused ? "ios-apps-sharp" : "ios-apps-sharp"
                 colour = focused ? "black" : "gray"
+<<<<<<< HEAD
             }else if(route.name === "Video"){
                 iconName = focused ? "ios-play-circle" : "ios-play-circle-outline"
                 colour = focused ? "black" : "gray"
             }else if(route.name === "Tags"){
+=======
+            }else  if(route.name === "Video"){
+                iconName = focused ? "ios-play-circle" : "ios-play-circle-outline"
+                colour = focused ? "black" : "gray"
+            }else  if(route.name === "Tags"){
+>>>>>>> e42e3ab73dcc772123e9d1c6c9481b65c070d295
                 iconName = focused ? "ios-person" : "ios-person-outline"
                 colour = focused ? "black" : "gray"
             }
@@ -113,7 +120,11 @@ const BottomTabView = () => {
         },
     })}>
         <Tab.Screen name="Posts" component={Posts}/>
+<<<<<<< HEAD
         <Tab.Screen name="Video" component={Video}/>
+=======
+        <Tab.Screen name="Viedo" component={Video}/>
+>>>>>>> e42e3ab73dcc772123e9d1c6c9481b65c070d295
         <Tab.Screen name="Tags" component={Tags}/>
     </Tab.Navigator>
   )

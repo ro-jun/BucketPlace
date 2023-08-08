@@ -34,23 +34,41 @@ const Mypage = () => {
   }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e42e3ab73dcc772123e9d1c6c9481b65c070d295
   return (
     <View style={{width:"100%", height: '100%', backgroundColor: 'white'}}>
       <View style={{width:'100%', padding:10}}>
         <ProfileBody
         name="EunSeop"
         accountName="EunSeop"
+<<<<<<< HEAD
         profileImage={require("../../images/userProfile2.jpg")}
         posts="0"
+=======
+        profileImage={require("./images/userProfile2.jpg")}
+        followers="??"
+        following="??"
+        posts="458"
+>>>>>>> e42e3ab73dcc772123e9d1c6c9481b65c070d295
         />
         <ProfileButtons 
           id={0} 
           name="ProfileBody.name" 
           accountName="ProfileBody.accountName"
+<<<<<<< HEAD
           profileImage={require("../../images/userProfile2.jpg")}
           />
       </View>
+=======
+          profileImage={require("./images/userProfile2.jpg")}
+          />
+      </View>
+      <View>
+      </View>
+>>>>>>> e42e3ab73dcc772123e9d1c6c9481b65c070d295
       <BottomTabView/>
     </View>
   );
