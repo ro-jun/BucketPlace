@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 
@@ -9,6 +9,10 @@ const PrintStart = () => {
   const [currentRouteCoordinates, setCurrentRouteCoordinates] = useState([]);
   const [savedRoutes, setSavedRoutes] = useState([]); // 저장된 경로 배열
   const locationListenerRef = useRef(null);
+  const [newMarkers, setNewMarkers] = useState([]); // 새로운 마커들을 저장할 배열
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [newMarkerName, setNewMarkerName] = useState('');
 
   useEffect(() => {
     getLocationAsync();
@@ -67,6 +71,36 @@ const PrintStart = () => {
     }
   };
 
+  const handlePlaceMarker = () => {
+    if (location && location.latitude && location.longitude) {
+      // 현재 위치에 새로운 마커를 찍습니다.
+      const newMarker = {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        title: `새로운 마커 #${newMarkers.length + 1}`, // 기본 이름 설정
+      };
+
+      setNewMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+    }
+  };
+
+  const handleMarkerPress = (index) => {
+    setSelectedMarkerIndex(index);
+    setIsEditModalVisible(true);
+    setNewMarkerName(newMarkers[index]?.title || '');
+  };
+
+  const handleConfirmMarkerName = (index) => {
+    if (index !== null) {
+      const updatedMarkers = [...newMarkers];
+      updatedMarkers[index].title = newMarkerName;
+      setNewMarkers(updatedMarkers);
+      setSelectedMarkerIndex(null);
+      setIsEditModalVisible(false);
+      setNewMarkerName('');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {location && (
@@ -79,13 +113,7 @@ const PrintStart = () => {
             longitudeDelta: 0.0421,
           }}
         >
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title="내 위치"
-          />
+          {/* 저장된 경로 표시 */}
           {savedRoutes.map((savedRoute, index) => (
             <Polyline
               key={index}
@@ -94,11 +122,38 @@ const PrintStart = () => {
               strokeColor="blue"
             />
           ))}
+
+          {/* 현재 녹화 중이라면 라인 표시 */}
           {recording && currentRouteCoordinates.length > 0 && (
             <Polyline
               coordinates={currentRouteCoordinates}
               strokeWidth={2}
               strokeColor="blue"
+            />
+          )}
+
+          {/* 새로운 마커 표시 */}
+          {newMarkers.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
+              title={marker.title}
+              pinColor="blue"
+              onPress={() => handleMarkerPress(index)}
+            />
+          ))}
+
+          {/* 현재 위치에 마커 표시 */}
+          {location.latitude !== null && location.longitude !== null && (
+            <Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+              title="내 위치"
             />
           )}
         </MapView>
@@ -112,6 +167,44 @@ const PrintStart = () => {
           {recording ? 'recording stop' : 'recording start'}
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, { top: 70, backgroundColor: 'green' }]}
+        onPress={handlePlaceMarker}
+      >
+        <Text style={styles.buttonText}>현재위치에 마커 찍기</Text>
+      </TouchableOpacity>
+
+      {/* 마커 이름 수정 모달 */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isEditModalVisible}
+        onRequestClose={() => setIsEditModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.markerNameInput}
+              value={newMarkerName}
+              onChangeText={setNewMarkerName}
+              placeholder="새로운 마커 이름"
+            />
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => handleConfirmMarkerName(selectedMarkerIndex)}
+            >
+              <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setIsEditModalVisible(false)}
+            >
+              <Text style={styles.buttonText}>취소</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -136,6 +229,37 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  markerNameInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 8,
+  },
+  confirmButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  cancelButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
   },
 });
 
