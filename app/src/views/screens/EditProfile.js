@@ -1,12 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, ToastAndroid, Image, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker'; // expo-image-picker 사용
 
 const EditProfile = ({ route, navigation }) => {
   const { name, accountName, profileImage } = route.params;
+  const [imageUrl, setImageUrl] = useState('');
+
+  const getMediaLibraryPermissionsAsync = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    return status === 'granted';
+  };
+
   const ToastMessage = () => {
     ToastAndroid.show('가입 성공!', ToastAndroid.SHORT);
   };
+  const uploadImage = async () => {
+      const permissionGranted = await getMediaLibraryPermissionsAsync();
+      if (!permissionGranted) {
+        return null;
+      
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1],
+    });
+    
+    if (result.canceled) {
+      return null;
+    }
+    
+    console.log(result);
+    setImageUrl(result.assets[0].uri);
+  };
+
+  
 
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
@@ -21,8 +52,10 @@ const EditProfile = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={{ padding: 20, alignItems: 'center' }}>
-          <Image source={profileImage} style={{ width: 80, height: 80, borderRadius: 100 }} />
-          <Text style={{ color: '#3493D9', marginTop: 10 }}>Change profile photo</Text>
+          <Image source={{ uri: imageUrl }} style={{ width: 80, height: 80, borderRadius: 100 }} />
+          <TouchableOpacity onPress={uploadImage}>
+          <Text style={{ color: '#3493D9', marginTop: 10 }}>프로필 사진 변경</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 18 }}>
           <View>
@@ -69,11 +102,11 @@ const EditProfile = ({ route, navigation }) => {
 
 const styles = {
   sectionText: {
-    marginVertical: 10,
-    padding: 10,
+    marginTop: 10,
+    marginLeft: 13,
+    fontSize: 15,
+    padding: 5,
     color: '#3493D9',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
     borderColor: '#EFEFEF',
   },
 };

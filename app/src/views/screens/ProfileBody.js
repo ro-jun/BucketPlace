@@ -38,6 +38,7 @@ export const ProfileBody = ({ name, accountName, profileImage, post, followers, 
               }}
             />
           </View>
+          <TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
@@ -49,11 +50,16 @@ export const ProfileBody = ({ name, accountName, profileImage, post, followers, 
               style={{
                 fontSize: 25,
                 color: 'black',
-                paddingHorizontal: 15,
+                marginLeft:220
               }}
             />
+            </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+            <View>
             <_Feather name="menu" style={{ fontSize: 25 }} />
           </View>
+          </TouchableOpacity>
         </View>
       ) : null}
       <View
@@ -76,12 +82,14 @@ export const ProfileBody = ({ name, accountName, profileImage, post, followers, 
               width: 80,
               height: 80,
               borderRadius: 100,
+              marginLeft:-60
             }}
           />
           <Text
             style={{
               paddingVertical: 5,
               fontWeight: 'bold',
+              marginLeft:-60
             }}
           >
             {name}
@@ -91,8 +99,13 @@ export const ProfileBody = ({ name, accountName, profileImage, post, followers, 
           style={{
             alignItems: 'center',
           }}
-        >
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{post}</Text>
+        > 
+          <Text style={{ 
+            fontWeight: 'bold', 
+            fontSize: 18, 
+            alignItems:'center',
+            }}>0</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 1 }}>{post}</Text>
           <Text>게시글</Text>
         </View>
         <View
@@ -100,16 +113,6 @@ export const ProfileBody = ({ name, accountName, profileImage, post, followers, 
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{followers}</Text>
-          <Text>팔로워</Text>
-        </View>
-        <View
-          style={{
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{following}</Text>
-          <Text>팔로잉</Text>
         </View>
       </View>
     </View>
@@ -152,7 +155,7 @@ export const ProfileButtons = ({ id, name, accountName, profileImage }) => {
                         fontSize:14,
                         letterSpacing:1, 
                         opacity: 0.8,
-                    }}>계정 만들기</Text>
+                    }}>프로필 편집</Text>
                 </View>
             </TouchableOpacity>
         </View>

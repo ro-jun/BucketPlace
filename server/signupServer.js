@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'junnsol9909*',
+    password: '1111',
     database: 'bucketplace'
 });
 
@@ -25,7 +25,7 @@ app.post('/signup', async (req, res) => {
         if (err) {
             return res.status(400).send({ error: err.message });
         }
-        res.send({ message: 'User registered successfully!' });
+        res.send({ message: '회원가입 성공!' });
     });
 });
 
@@ -51,7 +51,7 @@ app.post('/login', (req, res) => {
                 res.send({ success: false, message: 'Invalid email or password!' });
             }
         } else {
-            res.send({ success: false, message: 'Invalid email or password!' });
+            res.send({ success: false, message: '이메일이나 비밀번호가 틀렸습니다!' });
         }
     });
 });

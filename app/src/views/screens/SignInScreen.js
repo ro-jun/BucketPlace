@@ -33,11 +33,11 @@ function SignInScreen({navigation: { navigate }}) {
             if (data.success) { // 서버가 성공 응답을 보냈다면
                 navigate("Root", {screen:"Tabs"});
             } else {
-                Alert.alert("Error", "Invalid email or password!");
+                Alert.alert("Error", "이메일 또는 비밀번호가 틀렸습니다.");
             }
         } catch (error) {
             console.error("Error during login:", error);
-            Alert.alert("Error", "Something went wrong!");
+            Alert.alert("Error", "무언가 잘못됐어요");
         } 
     };
 
@@ -57,7 +57,7 @@ function SignInScreen({navigation: { navigate }}) {
                     </Text>
                 </View>     
                 <View style={{marginTop: 20}}>
-                    <View style={STYLES.inputcontainer}>
+                    <View style={STYLES.inputContainer}>
                         <Icon
                             name="mail-outline"
                             size={20}
@@ -71,7 +71,7 @@ function SignInScreen({navigation: { navigate }}) {
                                 onChangeText={(text) => setEmail(text)}
                             />
                         </View>
-                        <View style={STYLES.inputcontainer}>
+                        <View style={STYLES.inputContainer}>
                             <Icon
                                 name="lock-outline"
                                 size={20}

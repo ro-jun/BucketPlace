@@ -11,8 +11,8 @@ const Write = () => {
 const postInfo = [
     {
         postTitle: 'EunSeop',
-        postPersonImage: require('./images/userProfile2.jpg'),
-        postImage: require('./images/post1.jpg'),
+        postPersonImage: require('../../images/userProfile2.jpg'),
+        postImage: require('../../images/post1.jpg'),
         likes: 765,
         isLiked: false
     }
@@ -74,13 +74,8 @@ const postInfo = [
                                             name="ios-chatbubble-outline" 
                                             style={{fontSize:20, paddingRight: 10}}/>
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <_Feather
-                                            name="navigation" 
-                                            style={{fontSize:20}}/>
-                                    </TouchableOpacity>
                                 </View>
-                                <_Feather name="bookmark" style={{fontSize: 20}}/>
+
                             </View>
                             <View style={{paddingHorizontal: 15}}>
                                 <Text>
@@ -94,7 +89,7 @@ const postInfo = [
                                         귀여운 내 강아지
                                 </Text>
                                 <Text style={{opacity:0.4, paddingVertical: 2}}>
-                                    View all comments
+                                    전체 댓글 보기
                                 </Text>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <View style={{flexDirection: 'row', alignItems:'center'}}>
