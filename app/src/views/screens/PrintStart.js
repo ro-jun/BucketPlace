@@ -68,6 +68,12 @@ const PrintStart = () => {
         ...prevSavedRoutes,
         currentRouteCoordinates,
       ]);
+      
+      // recording 중단 로그 출력
+      console.log('Recording stopped. Saved route:', currentRouteCoordinates);
+    } else {
+      // 경로가 충분하지 않아 저장되지 않은 경우에 대한 로그 출력
+      console.log('Recording stopped. Route too short to save.');
     }
   };
 
@@ -98,6 +104,24 @@ const PrintStart = () => {
       setSelectedMarkerIndex(null);
       setIsEditModalVisible(false);
       setNewMarkerName('');
+
+      // 수정된 마커 정보 출력
+      const updatedMarker = updatedMarkers[index];
+      console.log('Updated marker:', updatedMarker);
+    }
+  };
+
+  const handleDeleteMarker = (index) => {
+    if (index !== null) {
+      const updatedMarkers = [...newMarkers];
+      updatedMarkers.splice(index, 1); // 선택한 마커 삭제
+      setNewMarkers(updatedMarkers);
+      setSelectedMarkerIndex(null);
+      setIsEditModalVisible(false);
+      setNewMarkerName('');
+  
+      // 삭제된 마커 정보 출력
+      console.log('Deleted marker at index', index);
     }
   };
 
@@ -146,7 +170,7 @@ const PrintStart = () => {
             />
           ))}
 
-          {/* 현재 위치에 마커 표시 */}
+          {/* 현재 위치에 마커 표시 위도,경도,title sql 저장하기 */}
           {location.latitude !== null && location.longitude !== null && (
             <Marker
               coordinate={{
@@ -195,6 +219,12 @@ const PrintStart = () => {
               onPress={() => handleConfirmMarkerName(selectedMarkerIndex)}
             >
               <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteButton} // 삭제 버튼 스타일
+              onPress={() => handleDeleteMarker(selectedMarkerIndex)} // 삭제 버튼 클릭 핸들러
+            >
+              <Text style={styles.buttonText}>삭제</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
@@ -260,6 +290,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
+  },
+  deleteButton: {
+    backgroundColor: 'red', // 삭제 버튼 배경색
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 5,
   },
 });
 
