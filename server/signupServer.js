@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1111',
+    password: 'junnsol9909*',
     database: 'bucketplace'
 });
 
@@ -25,6 +25,24 @@ app.post('/signup', (req, res) => {
             return res.status(400).send({ error: err.message });
         }
         res.send({ message: 'User registered successfully!' });
+    });
+});
+
+app.post('/login', (req, res) => {
+    console.log("Login request received:", req.body);
+    const { email, password } = req.body;
+
+    const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+    db.query(query, [email, password], (err, results) => {
+        if (err) {
+            return res.status(400).send({ error: err.message });
+        }
+
+        if (results.length > 0) {
+            res.send({ success: true, message: 'User logged in successfully!' });
+        } else {
+            res.send({ success: false, message: 'Invalid email or password!' });
+        }
     });
 });
 

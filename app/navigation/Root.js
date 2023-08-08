@@ -4,6 +4,7 @@ import Tabs from "./Tab";
 import Stack from "./Stack";
 import SignUp from "../src/views/screens/SignUpScreen";
 import PostScreen from '../src/Posts/post';
+import EditProfile from '../src/views/screens/EditProfile';
 
 const Nav = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ const Root = () => (
     <Nav.Screen name="Tabs" component={Tabs}/>
     <Nav.Screen name="Stack" component={Stack}/>
     <Nav.Screen name="SignUp" component={SignUp}/>
+    <Nav.Screen name="EditProfile" component={EditProfile}/>
 </Nav.Navigator>
 );
 
