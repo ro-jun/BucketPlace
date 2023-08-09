@@ -46,7 +46,8 @@ const EditProfile = ({ route, navigation }) => {
           screen: '마이페이지',
           params: {
               editedName: editedName,
-              editedAccountName: editedAccountName
+              editedAccountName: editedAccountName,
+              editedImageUrl: imageUrl,
           }
       });
   };
