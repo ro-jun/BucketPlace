@@ -1,12 +1,28 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { ProfileBody, ProfileButtons } from './ProfileBody';
 import _Entypo from "react-native-vector-icons/Entypo";
 import BottomTabView from './BottomTabView';
 
-const Mypage = () => {
+const Mypage = ({ route }) => {
   let circuls = [];
-  let numberofcircels = 10
+  let numberofcircels = 10;
+
+  const [name, setName] = React.useState(route.params?.editedName || 'Ro');
+  const [accountName, setAccountName] = React.useState(route.params?.editedAccountName || 'Ro');
+  const [profileImage, setProfileImage] = React.useState(require("./images/userProfile2.jpg"));
+
+  React.useEffect(() => {
+    if (route.params?.editedImageUrl) {
+      setProfileImage({ uri: route.params.editedImageUrl });
+    }
+    if (route.params?.editedName) {
+      setName(route.params.editedName);
+    }
+    if (route.params?.editedAccountName) {
+      setAccountName(route.params.editedAccountName);
+    }
+  }, [route.params]);
 
   for (let index = 0; index< numberofcircels; index ++){
     circuls.push(
@@ -35,28 +51,26 @@ const Mypage = () => {
 
 
   return (
-    <View style={{width:"100%", height: '100%', backgroundColor: 'white'}}>
-      <View style={{width:'100%', padding:10}}>
+    <View style={{ width: "100%", height: '100%', backgroundColor: 'white' }}>
+      <View style={{ width: '100%', padding: 10 }}>
         <ProfileBody
-        name="EunSeop"
-        accountName="EunSeop"
-        profileImage={require("./images/userProfile2.jpg")}
-        followers="??"
-        following="??"
-        posts="458"
+          name={name}
+          accountName={accountName}
+          profileImage={profileImage}
+          followers="??"
+          following="??"
+          posts="458"
         />
-        <ProfileButtons 
-          id={0} 
-          name="ProfileBody.name" 
-          accountName="ProfileBody.accountName"
-          profileImage={require("./images/userProfile2.jpg")}
-          />
+        <ProfileButtons
+          id={0}
+          name={name}
+          accountName={accountName}
+          profileImage={profileImage}
+        />
       </View>
-      <View>
-      </View>
-      <BottomTabView/>
+      <BottomTabView />
     </View>
   );
-  };
+};
 
 export default Mypage;
