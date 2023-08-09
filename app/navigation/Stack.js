@@ -23,7 +23,7 @@ const NativeStack = createNativeStackNavigator();
 const Stack = () => <NativeStack.Navigator
         screenOptions={{
             presentation: "modal",
-        }}    
+        }}
     >
     <NativeStack.Screen 
         name ="One" 
