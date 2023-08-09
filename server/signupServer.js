@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1111',
+    password: 'junnsol9909*',
     database: 'bucketplace'
 });
 
@@ -53,6 +53,19 @@ app.post('/login', (req, res) => {
         } else {
             res.send({ success: false, message: '이메일이나 비밀번호가 틀렸습니다!' });
         }
+    });
+});
+
+app.post('/root', (req, res) => {
+    console.log("root request recevied:", req.body);
+    const { lat, lon, users_email } = req.body;
+
+    const query = "INSERT INTO root (lat, lon, users_email) VALUES (?, ?, ?)";
+    db.query(query, [lat, lon, users_email], (err, results) => {
+        if(err) {
+            return res.status(400).send({error: err.message});
+        }
+        res.send({ message: 'root registered successfully!'});
     });
 });
 

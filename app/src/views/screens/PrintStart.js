@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'reac
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-const PrintStart = () => {
+  const PrintStart = () => {
   const [location, setLocation] = useState(null);
   const [recording, setRecording] = useState(false);
   const [currentRouteCoordinates, setCurrentRouteCoordinates] = useState([]);
@@ -41,12 +41,37 @@ const PrintStart = () => {
                 longitude: location.coords.longitude,
               },
             ]);
+
+              // Send location update to the server
+              handleLocationUpdate(location.coords);
           }
         }
       );
     } catch (error) {
       console.error('현재 위치를 가져오는데 실패했습니다:', error);
     }
+  };
+
+  const handleLocationUpdate = (updatedLocation) => {
+    // Send location data to the server when location updates
+    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lat: updatedLocation.latitude,
+        lon: updatedLocation.longitude,
+        users_email: 'Hyun', // Modify this to the appropriate user email
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Location data sent to the server:', data);
+      })
+      .catch((error) => {
+        console.error('Error sending location data:', error);
+      });
   };
 
   const handleStartRecording = () => {
@@ -58,16 +83,57 @@ const PrintStart = () => {
         longitude: location.longitude,
       },
     ]);
-  };
+  
+    // Send location data to the server when recording starts
+    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lat: location.latitude,
+        lon: location.longitude,
+        users_email: 'Hyun', // Modify this to the appropriate user email
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Start location data sent to the server:', data);
+      })
+      .catch((error) => {
+        console.error('Error sending start location data:', error);
+      });
+  };  
 
   const handleStopRecording = () => {
-    setRecording(false); // recording을 false로 설정하여 경로 기록 중단
+    setRecording(false);
     if (currentRouteCoordinates.length > 1) {
-      // 경로가 최소 2개 이상일 때 (시작점과 종료점), 저장된 경로에 추가
       setSavedRoutes((prevSavedRoutes) => [
         ...prevSavedRoutes,
         currentRouteCoordinates,
       ]);
+
+      // Send location data to the server
+      fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          lat: currentRouteCoordinates[currentRouteCoordinates.length - 1].latitude,
+          lon: currentRouteCoordinates[currentRouteCoordinates.length - 1].longitude,
+          users_email: 'Hyun', // Modify this to the appropriate user email
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Location data sent to the server:', data);
+        })
+        .catch((error) => {
+          console.error('Error sending location data:', error);
+        });
+    } else {
+      console.log('Recording stopped. Route too short to save.');
     }
   };
 
@@ -98,6 +164,24 @@ const PrintStart = () => {
       setSelectedMarkerIndex(null);
       setIsEditModalVisible(false);
       setNewMarkerName('');
+
+      // 수정된 마커 정보 출력
+      const updatedMarker = updatedMarkers[index];
+      console.log('Updated marker:', updatedMarker);
+    }
+  };
+
+  const handleDeleteMarker = (index) => {
+    if (index !== null) {
+      const updatedMarkers = [...newMarkers];
+      updatedMarkers.splice(index, 1); // 선택한 마커 삭제
+      setNewMarkers(updatedMarkers);
+      setSelectedMarkerIndex(null);
+      setIsEditModalVisible(false);
+      setNewMarkerName('');
+  
+      // 삭제된 마커 정보 출력
+      console.log('Deleted marker at index', index);
     }
   };
 
@@ -146,7 +230,7 @@ const PrintStart = () => {
             />
           ))}
 
-          {/* 현재 위치에 마커 표시 */}
+          {/* 현재 위치에 마커 표시 위도,경도,title sql 저장하기 */}
           {location.latitude !== null && location.longitude !== null && (
             <Marker
               coordinate={{
@@ -195,6 +279,12 @@ const PrintStart = () => {
               onPress={() => handleConfirmMarkerName(selectedMarkerIndex)}
             >
               <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteButton} // 삭제 버튼 스타일
+              onPress={() => handleDeleteMarker(selectedMarkerIndex)} // 삭제 버튼 클릭 핸들러
+            >
+              <Text style={styles.buttonText}>삭제</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
@@ -260,6 +350,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
+  },
+  deleteButton: {
+    backgroundColor: 'red', // 삭제 버튼 배경색
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 5,
   },
 });
 
