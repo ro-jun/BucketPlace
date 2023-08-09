@@ -13,7 +13,7 @@ const ScreenTwo = ({navigation : { navigate }}) => (
     </TouchableOpacity>
 );
 const ScreenThree = ({navigation : { navigate }}) => (
-    <TouchableOpacity onPress={() => navigate("Tabs", {screen: "Home"})}>
+    <TouchableOpacity onPress={() => navigate("Tabs", {screen: "홈"})}> 
         <Text>Go back</Text>
     </TouchableOpacity>
 );
@@ -23,7 +23,7 @@ const NativeStack = createNativeStackNavigator();
 const Stack = () => <NativeStack.Navigator
         screenOptions={{
             presentation: "modal",
-        }}    
+        }}
     >
     <NativeStack.Screen 
         name ="One" 

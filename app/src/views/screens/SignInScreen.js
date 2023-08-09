@@ -17,7 +17,7 @@ function SignInScreen({navigation: { navigate }}) {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://8f25-120-142-74-163.ngrok-free.app/login', {
+            const response = await fetch('https://4e07-120-142-74-163.ngrok-free.app/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

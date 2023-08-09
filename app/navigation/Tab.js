@@ -1,18 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, useColorScheme } from 'react-native';
-import Home from '../src/views/screens/Home';
+import Home from '../src/views/screens/Home.tsx';
 import Footprints from '../src/views/screens/Footprints';
 import Write from '../src/views/screens/Write';
 import Mypage from '../src/views/screens/Mypage';
 import PrintStart from '../src/views/screens/PrintStart'; // PrintStart 스크린 import
-import BLACK_COLOR from '../src/consts/color';
-import YELLOW_COLOR from '../src/consts/color';
+import BLACK_COLOR, { YELLOW_COLOR } from '../src/consts/color'; 
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => { 
- const isDark = useColorScheme() === "dark";
+    const isDark = useColorScheme() === "dark";
+    const activeIconColor = isDark ? "white" : BLACK_COLOR;
+   
   return (
     <Tab.Navigator screenOptions={{tabBarStyle: {
         backgroundColor: isDark ? BLACK_COLOR : "white",
@@ -37,7 +38,7 @@ const Tabs = () => {
             options={{
                 headerTitleAlign: 'center',
                 tabBarIcon : ({focused, color, size}) => {
-                    return <Ionicons name="home" size={24} color="black"/>
+                    return <Ionicons name="home" size={24} color={activeIconColor}/>
                 }
             }}/>
         <Tab.Screen 
@@ -46,7 +47,7 @@ const Tabs = () => {
             options={{
                 headerTitleAlign: 'center', 
                 tabBarIcon : ({focuesd, color, size}) => {
-                    return <Ionicons name="paw" size={24} color="black" />
+                    return <Ionicons name="paw" size={24} color={activeIconColor} />
                 } 
             }} />
         <Tab.Screen 
@@ -55,7 +56,7 @@ const Tabs = () => {
             options={{
                 headerTitleAlign: 'center', 
                 tabBarIcon : ({focuesd, color, size}) => {
-                return <Ionicons name="reader" size={30} color="black" />
+                return <Ionicons name="reader" size={30} color={activeIconColor} />
             }
             }}/>
         <Tab.Screen 
@@ -64,7 +65,7 @@ const Tabs = () => {
             options={{
                 headerTitleAlign: 'center', 
                 tabBarIcon : ({focuesd, color, size}) => {
-                    return <Ionicons name="person" size={24} color="black" />
+                    return <Ionicons name="person" size={24} color={activeIconColor} />
              } 
              }} />
         {/* PrintStart 스크린 추가 */}
