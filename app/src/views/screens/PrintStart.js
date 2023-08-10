@@ -54,7 +54,7 @@ import * as Location from 'expo-location';
 
   const handleLocationUpdate = (updatedLocation) => {
     // Send location data to the server when location updates
-    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,6 @@ import * as Location from 'expo-location';
       body: JSON.stringify({
         lat: updatedLocation.latitude,
         lon: updatedLocation.longitude,
-        users_email: 'Hyun', // Modify this to the appropriate user email
       }),
     })
       .then((response) => response.json())
@@ -85,7 +84,7 @@ import * as Location from 'expo-location';
     ]);
   
     // Send location data to the server when recording starts
-    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +92,6 @@ import * as Location from 'expo-location';
       body: JSON.stringify({
         lat: location.latitude,
         lon: location.longitude,
-        users_email: 'Hyun', // Modify this to the appropriate user email
       }),
     })
       .then((response) => response.json())
@@ -114,7 +112,7 @@ import * as Location from 'expo-location';
       ]);
 
       // Send location data to the server
-      fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+      fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +120,6 @@ import * as Location from 'expo-location';
         body: JSON.stringify({
           lat: currentRouteCoordinates[currentRouteCoordinates.length - 1].latitude,
           lon: currentRouteCoordinates[currentRouteCoordinates.length - 1].longitude,
-          users_email: 'Hyun', // Modify this to the appropriate user email
         }),
       })
         .then((response) => response.json())
