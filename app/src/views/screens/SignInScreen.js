@@ -19,7 +19,7 @@ function SignInScreen({navigation: { navigate }}) {
     
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://d50f-120-142-74-163.ngrok-free.app/login', {
+            const response = await fetch('https://e6ff-120-142-74-163.ngrok-free.app/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function SignInScreen({navigation: { navigate }}) {
                             styles={STYLES.inputIcon}
                         />
                         <TextInput 
-                                placeholder="Email" 
+                                placeholder="이메일" 
                                 style={STYLES.input}
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
@@ -85,7 +85,7 @@ function SignInScreen({navigation: { navigate }}) {
                                 styles={STYLES.inputIcon}
                             />
                             <TextInput 
-                                placeholder="password" 
+                                placeholder="비밀번호" 
                                 style={STYLES.input}
                                 secureTextEntry
                                 value={password}
@@ -116,10 +116,10 @@ function SignInScreen({navigation: { navigate }}) {
                             marginBottom: 20,
                         }}>
                         <Text style={{color: COLORS.light, fontWeight: 'bold'}}>
-                            Don`t have an account ?
+                            계정이 없으면 눌러주세요:
                         </Text>
                         <Btn onPress={() => navigate('SignUp', {screen:"SignUp"})}>
-                            <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>Sign up</Text>
+                            <Text style={{color: COLORS.pink, fontWeight: 'bold'}}>회원가입</Text>
                         </Btn>
                     </View>
                 </ScrollView>
