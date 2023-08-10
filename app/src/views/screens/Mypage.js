@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { ProfileBody, ProfileButtons } from './ProfileBody';
 import _Entypo from "react-native-vector-icons/Entypo";
 import BottomTabView from './BottomTabView';
-
+import { UserContext } from '../../User/UserContext';
+import profileImageDefault from "./images/userProfile.png";
 const Mypage = ({ route }) => {
   let circuls = [];
   let numberofcircels = 10;
 
-  const [name, setName] = React.useState(route.params?.editedName || 'Ro');
-  const [accountName, setAccountName] = React.useState(route.params?.editedAccountName || 'Ro');
-  const [profileImage, setProfileImage] = React.useState(require("./images/userProfile2.jpg"));
+  const { user } = useContext(UserContext);
+  const [name, setName] = React.useState(user?.name || 'Default Name');
+  const [accountName, setAccountName] = React.useState(user?.email || 'Default Email');
+  const [profileImage, setProfileImage] = useState(profileImageDefault);
 
   React.useEffect(() => {
     if (route.params?.editedImageUrl) {
@@ -24,23 +26,23 @@ const Mypage = ({ route }) => {
     }
   }, [route.params]);
 
-  for (let index = 0; index< numberofcircels; index ++){
+  for (let index = 0; index < numberofcircels; index++) {
     circuls.push(
-      <View key = {index}>
+      <View key={index}>
         {
           index === 0 ? (
             <View style={{
-              width:60, height:60,
-              borderRadius:100, borderWidth:1, opacity:0.7, marginHorizontal:5,
-              justifyContent:'center',
-              alignItems:'center',
+              width: 60, height: 60,
+              borderRadius: 100, borderWidth: 1, opacity: 0.7, marginHorizontal: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-              <_Entypo name="plus" style={{fontSize: 40, color: 'black'}}/>
+              <_Entypo name="plus" style={{ fontSize: 40, color: 'black' }} />
             </View>
           ) : (
             <View style={{
-              width:60, height:60, borderRadius:100, backgroundColor:"black",
-              opacity:0.1, marginHorizontal: 5,
+              width: 60, height: 60, borderRadius: 100, backgroundColor: "black",
+              opacity: 0.1, marginHorizontal: 5,
             }}>
             </View>
           )
@@ -49,7 +51,6 @@ const Mypage = ({ route }) => {
     )
   }
 
-
   return (
     <View style={{ width: "100%", height: '100%', backgroundColor: 'white' }}>
       <View style={{ width: '100%', padding: 10 }}>
@@ -57,8 +58,6 @@ const Mypage = ({ route }) => {
           name={name}
           accountName={accountName}
           profileImage={profileImage}
-          followers="??"
-          following="??"
           posts="458"
         />
         <ProfileButtons
