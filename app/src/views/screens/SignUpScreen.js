@@ -16,7 +16,7 @@ const SignUpScreen = ({ navigation: { navigate } }) => {
   const handleSignUp = async () => {
     console.log("회원가입 버튼이 눌렸습니다.");
     try {
-      const response = await fetch('https://4ae7-120-142-74-163.ngrok-free.app/signup', {
+      const response = await fetch('https://31d7-120-142-74-163.ngrok-free.app/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

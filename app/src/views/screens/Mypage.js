@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { ProfileBody, ProfileButtons } from './ProfileBody';
 import _Entypo from "react-native-vector-icons/Entypo";
 import BottomTabView from './BottomTabView';
-
+import { UserContext } from '../../User/UserContext';
+import profileImageDefault from "./images/userProfile.png";
 const Mypage = ({ route }) => {
   let circuls = [];
   let numberofcircels = 10;
 
-  const [name, setName] = React.useState(route.params?.editedName || 'Ro');
-  const [accountName, setAccountName] = React.useState(route.params?.editedAccountName || 'Ro');
-  const [profileImage, setProfileImage] = React.useState(require("./images/userProfile2.jpg"));
+  const { user } = useContext(UserContext);
+  const [name, setName] = React.useState(user?.name || 'Default Name');
+  const [accountName, setAccountName] = React.useState(user?.email || 'Default Email');
+  const [profileImage, setProfileImage] = useState(profileImageDefault);
 
   React.useEffect(() => {
     if (route.params?.editedImageUrl) {

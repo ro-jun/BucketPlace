@@ -46,8 +46,15 @@ app.post('/login', (req, res) => {
             const match = await bcrypt.compare(password, user.password);
 
             if (match) {
-                res.send({ success: true, message: 'User logged in successfully!' });
-            } else {
+            res.send({ 
+                success: true, 
+                message: 'User logged in successfully!', 
+                user: {
+                    name: user.name,
+                    email: user.email
+                }
+            });
+        } else {
                 res.send({ success: false, message: 'Invalid email or password!' });
             }
         } else {

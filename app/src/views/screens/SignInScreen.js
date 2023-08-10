@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, TextInput, Image, Alert} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,6 +6,7 @@ import COLORS from '../../consts/color';
 import STYLES from '../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from "styled-components/native";
+import { UserContext } from '../../User/UserContext';
 
 const Btn = styled.TouchableOpacity``;
 const Btn2 = styled.TouchableOpacity``;
@@ -14,10 +15,11 @@ const Btn3 = styled.TouchableOpacity``;
 function SignInScreen({navigation: { navigate }}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
-
+    const { setUser } = useContext(UserContext);
+    
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://4ae7-120-142-74-163.ngrok-free.app/login', {
+            const response = await fetch('https://31d7-120-142-74-163.ngrok-free.app/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,8 +32,12 @@ function SignInScreen({navigation: { navigate }}) {
 
             const data = await response.json();
 
-            if (data.success) { // 서버가 성공 응답을 보냈다면
-                navigate("Root", {screen:"Tabs"});
+            if (data.success) {
+                setUser({
+                    email: data.user.email,
+                    name: data.user.name
+                });
+                navigate("Root", { screen: "Tabs", params: { screen: "홈" } });
             } else {
                 Alert.alert("Error", "이메일 또는 비밀번호가 틀렸습니다.");
             }

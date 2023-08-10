@@ -156,6 +156,7 @@ const EditProfile = ({ route, navigation }) => {
                       placeholder="Name"
                       value={editedName}
                       onChangeText={setEditedName}
+                      editable={false}
                   />
                   <InputWithLabel 
                       label="사용자이름"

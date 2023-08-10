@@ -18,4 +18,5 @@ const Sign = () => (
 </Nav.Navigator>
 );
 
+
 export default Sign;

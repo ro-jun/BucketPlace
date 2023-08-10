@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { captureRef } from 'react-native-view-shot';
 
   const PrintStart = () => {
   const [location, setLocation] = useState(null);
@@ -17,6 +18,20 @@ import * as Location from 'expo-location';
   useEffect(() => {
     getLocationAsync();
   }, []);
+
+  const handleCaptureScreen = async () => {
+    try {
+      const result = await captureRef(mapRef, {
+        format: 'jpg',
+        quality: 0.8,
+      });
+
+      // 캡처된 이미지는 'result'에 있습니다 (base64 문자열 또는 파일 경로)
+      console.log('화면 캡처 완료:', result);
+    } catch (error) {
+      console.error('화면 캡처 중 오류 발생:', error);
+    }
+  };
 
   const getLocationAsync = async () => {
     try {
@@ -54,7 +69,7 @@ import * as Location from 'expo-location';
 
   const handleLocationUpdate = (updatedLocation) => {
     // Send location data to the server when location updates
-    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://31d7-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +100,7 @@ import * as Location from 'expo-location';
     ]);
   
     // Send location data to the server when recording starts
-    fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://31d7-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +129,7 @@ import * as Location from 'expo-location';
       ]);
 
       // Send location data to the server
-      fetch('https://4ae7-120-142-74-163.ngrok-free.app/root', {
+      fetch('https://31d7-120-142-74-163.ngrok-free.app/root', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -189,6 +204,7 @@ import * as Location from 'expo-location';
     <View style={styles.container}>
       {location && (
         <MapView
+        ref={(ref) => (mapRef = ref)} // MapView의 참조를 저장
           style={styles.map}
           initialRegion={{
             latitude: location.latitude,
@@ -257,6 +273,13 @@ import * as Location from 'expo-location';
         onPress={handlePlaceMarker}
       >
         <Text style={styles.buttonText}>현재위치에 마커 찍기</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, { top: 120, backgroundColor: 'purple' }]}
+        onPress={handleCaptureScreen}
+      >
+        <Text style={styles.buttonText}>화면 캡처</Text>
       </TouchableOpacity>
 
       {/* 마커 이름 수정 모달 */}
