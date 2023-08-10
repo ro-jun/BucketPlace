@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'reac
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { captureRef } from 'react-native-view-shot';
+import { Alert } from 'react-native';
 
   const PrintStart = () => {
   const [location, setLocation] = useState(null);
@@ -25,11 +26,16 @@ import { captureRef } from 'react-native-view-shot';
         format: 'jpg',
         quality: 0.8,
       });
-
+  
       // 캡처된 이미지는 'result'에 있습니다 (base64 문자열 또는 파일 경로)
       console.log('화면 캡처 완료:', result);
+  
+      // 캡쳐 완료 메시지 표시
+      Alert.alert('캡처 완료', '화면이 성공적으로 캡처되었습니다.');
     } catch (error) {
       console.error('화면 캡처 중 오류 발생:', error);
+      // 오류 메시지 표시
+      Alert.alert('오류', '화면 캡처 중 오류가 발생했습니다.');
     }
   };
 
@@ -69,7 +75,7 @@ import { captureRef } from 'react-native-view-shot';
 
   const handleLocationUpdate = (updatedLocation) => {
     // Send location data to the server when location updates
-    fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://e6ff-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +105,7 @@ import { captureRef } from 'react-native-view-shot';
     ]);
   
     // Send location data to the server when recording starts
-    fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
+    fetch('https://e6ff-120-142-74-163.ngrok-free.app/root', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +133,7 @@ import { captureRef } from 'react-native-view-shot';
       ]);
 
       // Send location data to the server
-      fetch('https://d50f-120-142-74-163.ngrok-free.app/root', {
+      fetch('https://e6ff-120-142-74-163.ngrok-free.app/root', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

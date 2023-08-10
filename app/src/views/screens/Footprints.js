@@ -98,6 +98,7 @@ const Footprints = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showList, setShowList] = useState(false); // 검색 결과 리스트를 보여줄지 여부를 저장하는 state 변수
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 마커 정보를 저장하는 state 변수
+  const [selectedCoordinate, setSelectedCoordinate] = useState(null); // 선택된 위치의 좌표를 저장하는 상태
   const mapRef = useRef(null);
 
   // React Navigation Hook을 사용하여 navigation 객체 가져오기
@@ -139,7 +140,7 @@ const Footprints = () => {
 
   const handleChangeText = (text) => {
     setSearchText(text);
-    const googleMapApiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${text}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+    const googleMapApiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${text}&key=AIzaSyDj6P9AGKAATc2EIFxhUvgyYvnTpZJZPik`;
     fetch(googleMapApiUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -182,13 +183,16 @@ const Footprints = () => {
     setSelectedPlace(place);
     const latitude = place.geometry.location.lat;
     const longitude = place.geometry.location.lng;
+    const coordinate = { latitude, longitude };
+    
+    setSelectedCoordinate(coordinate); // 선택된 위치의 좌표 저장
     mapRef.current.animateToRegion({
       latitude,
       longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
-    setShowList(false); // 장소 선택 후 리스트 숨기기
+    setShowList(false);
   };
 
   const handleSearchButtonPress = () => {

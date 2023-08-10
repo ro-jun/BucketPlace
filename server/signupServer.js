@@ -33,18 +33,6 @@ app.post('/login', (req, res) => {
     console.log("Login request received:", req.body);
     const { email, password } = req.body;
 
-    const updateQuery = 'UPDATE root SET users_email = ? WHERE users_email IS NULL AND users_email != ?';
-    // email정보를 로그인함과 동시에 users_email로 전송
-   db.query(updateQuery, [email, email], (error, results) => {
-    if (error) {
-      console.error('Error updating user email:', error);
-      res.status(500).json({ message: 'Error updating user email' });
-    } else {
-      console.log('Email updated in root table');
-      res.status(200).json({ message: 'Email updated in root table' });
-    }
-  });
-
     const query = "SELECT * FROM users WHERE email = ?";
     db.query(query, [email], async (err, results) => {
         if (err) {
@@ -73,15 +61,14 @@ app.post('/login', (req, res) => {
             res.send({ success: false, message: '이메일이나 비밀번호가 틀렸습니다!' });
         }
     });
-}); 
-
+});
 
 app.post('/root', (req, res) => {
     console.log("root request recevied:", req.body);
-    const { lat, lon } = req.body;
+    const { lat, lon, users_email } = req.body;
 
-    const query = "INSERT INTO root (lat, lon) VALUES (?, ?)";
-    db.query(query, [lat, lon], (err, results) => {
+    const query = "INSERT INTO root (lat, lon, users_email) VALUES (?, ?, ?)";
+    db.query(query, [lat, lon, users_email], (err, results) => {
         if(err) {
             return res.status(400).send({error: err.message});
         }
