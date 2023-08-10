@@ -1,91 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { Card } from 'react-native-elements';
-import { Agenda } from 'react-native-calendars';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import { Calendar } from 'react-native-calendars';
+
+const festivalData = [
+  {
+    id: '1',
+    name: '서울국제작가축제',
+    date: '2023-09-08',
+    location: '서울 용산구',
+    image: require('../../images/Writer.png'),
+  },
+  // Add more festival data here
+];
 
 const FestivalScreen = () => {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [festivalData, setFestivalData] = useState([]);
-  const [items, setItems] = useState({});
 
-  useEffect(() => {
-    const fetchFestivalData = async (date) => {
-      try {
-        const response = await axios.get(
-          'http://api.data.go.kr/openapi/tn_pubr_public_cltur_fstvl_api',
-          {
-            params: {
-              authKey: '3Q4YOF/wpptIJpHlQch8hcX+Z017/bFAHLVFjNa1UAhnIGOGkapnR9O/WCesQiZ+jnmk18bTObj9Uuwh9XnOdg==', // 본인의 인증키로 대체
-              pageNo: 1,
-              numOfRows: 10,
-              evtYmd: date, // 선택한 날짜를 API 요청에 전달
-            },
-          }
-        );
-
-        console.log('API Response:', response.data);
-
-        const fetchedData = response.data; // API 응답 데이터 처리
-        setFestivalData(fetchedData); // 축제 데이터 설정
-
-        const updatedItems = {}; // Agenda 컴포넌트에 사용할 items 객체 생성
-
-        fetchedData.forEach((festival) => {
-          const formattedDate = festival.date.replace(/\./g, '-');
-          if (!updatedItems[formattedDate]) {
-            updatedItems[formattedDate] = [];
-          }
-          updatedItems[formattedDate].push({
-            name: festival.name,
-            location: festival.location,
-          });
-        });
-
-        setItems(updatedItems); // items 객체 설정
-      } catch (error) {
-        console.error('Error fetching festival data:', error);
-      }
-    };
-
-    if (selectedDate) {
-      fetchFestivalData(selectedDate);
-    }
-  }, [selectedDate]);
-
-  const renderItem = ({ item }) => {
-    if (!item.name) {
-      return null; // Handle empty item gracefully
-    }
-
-    const festival = festivalData.find(f => f.name === item.name);
-
-    if (!festival) {
-      return null; // If festival is not found, return null or a placeholder
-    }
-
-    return (
-      <Card>
-        <Card.Title>{festival.name}</Card.Title>
-        <Card.Divider />
-        <Image source={require('../../images/Writer.png')} style={styles.image} />
-        <Text>날짜: {festival.date}</Text>
-        <Text>위치: {festival.location}</Text>
-      </Card>
-    );
-  };
-
-  const renderEmptyDate = () => {
-    return (
-      <View style={styles.emptyDateContainer}>
-        <Text style={styles.emptyDateText}>No Festivals</Text>
-      </View>
-    );
-  };
-
-  const rowHasChanged = (r1, r2) => {
-    return r1.name !== r2.name;
-  };
+  const renderItem = ({ item }) => (
+    <Card>
+      <Card.Title>{item.name}</Card.Title>
+      <Card.Divider />
+      <Image source={item.image} style={styles.image} />
+      <Text>날짜: {item.date}</Text>
+      <Text>위치: {item.location}</Text>
+    </Card>
+  );
 
   const onDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -93,18 +33,24 @@ const FestivalScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Agenda
-        items={items}
-        renderItem={renderItem}
-        renderEmptyDate={renderEmptyDate}
-        rowHasChanged={rowHasChanged}
+      <Calendar
         onDayPress={onDayPress}
+        style={styles.calendar}
+        // You can customize the appearance of the calendar here
+        // For example:
+        // theme={{
+        //   selectedDayBackgroundColor: 'blue',
+        //   selectedDayTextColor: 'white',
+        // }}
       />
-      {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          선택한 날짜: {selectedDate}
-        </Text>
-      )}
+      <Text style={styles.selectedDateText}>
+        선택한 날짜: {selectedDate ? selectedDate : '날짜를 선택하세요'}
+      </Text>
+      <FlatList
+        data={festivalData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
@@ -120,14 +66,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     marginBottom: 10,
   },
-  emptyDateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyDateText: {
-    fontSize: 18,
-    color: 'gray',
+  calendar: {
+    marginBottom: 10,
   },
   selectedDateText: {
     marginTop: 10,
