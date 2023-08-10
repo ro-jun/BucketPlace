@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './views/screens/SignInScreen';
 import SignUpScreen from './views/screens/SignUpScreen';
 import Sign from './views/screens/Sign';
+import { UserProvider } from './User/UserContext';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -27,9 +28,11 @@ export default function App() {
 
 
 //Sign.js 불러오기
-  return (
+return (
+  <UserProvider>
       <NavigationContainer>
-        <Sign />
+          <Sign />
       </NavigationContainer>
-  );
+  </UserProvider>
+);
 }
