@@ -40,6 +40,8 @@
     "react-is": "^18.2.0",
     "react-native": "0.71.8",
     "react-native-background-geolocation": "^4.12.1",
+    "react-native-calendars": "^1.1300.0",
+    "react-native-elements": "^3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.9.0",
@@ -60,8 +62,7 @@
     "react-redux": "^8.1.2",
     "styled-components": "^6.0.5",
     "typescript": "^4.9.4",
-    "xml-js": "^1.6.11",
-    "expo-blur": "~12.2.2"
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

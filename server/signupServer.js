@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'junnsol9909*',
+    password: '1111',
     database: 'bucketplace'
 });
 

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, useColorScheme } from 'react-native';
-import Home from '../src/views/screens/Home.tsx';
+import Home from '../src/views/screens/Home.js';
 import Footprints from '../src/views/screens/Footprints';
 import Write from '../src/views/screens/Write';
 import Mypage from '../src/views/screens/Mypage';
