@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal } from 'reac
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-const PrintStart = () => {
+  const PrintStart = () => {
   const [location, setLocation] = useState(null);
   const [recording, setRecording] = useState(false);
   const [currentRouteCoordinates, setCurrentRouteCoordinates] = useState([]);
@@ -41,12 +41,37 @@ const PrintStart = () => {
                 longitude: location.coords.longitude,
               },
             ]);
+
+              // Send location update to the server
+              handleLocationUpdate(location.coords);
           }
         }
       );
     } catch (error) {
       console.error('현재 위치를 가져오는데 실패했습니다:', error);
     }
+  };
+
+  const handleLocationUpdate = (updatedLocation) => {
+    // Send location data to the server when location updates
+    fetch('http://your_server_ip:3000/root', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lat: updatedLocation.latitude,
+        lon: updatedLocation.longitude,
+        users_email: 'sex', // Modify this to the appropriate user email
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Location data sent to the server:', data);
+      })
+      .catch((error) => {
+        console.error('Error sending location data:', error);
+      });
   };
 
   const handleStartRecording = () => {
@@ -58,21 +83,56 @@ const PrintStart = () => {
         longitude: location.longitude,
       },
     ]);
-  };
+  
+    // Send location data to the server when recording starts
+    fetch('http://your_server_ip:3000/root', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lat: location.latitude,
+        lon: location.longitude,
+        users_email: 'sex', // Modify this to the appropriate user email
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Start location data sent to the server:', data);
+      })
+      .catch((error) => {
+        console.error('Error sending start location data:', error);
+      });
+  };  
 
   const handleStopRecording = () => {
-    setRecording(false); // recording을 false로 설정하여 경로 기록 중단
+    setRecording(false);
     if (currentRouteCoordinates.length > 1) {
-      // 경로가 최소 2개 이상일 때 (시작점과 종료점), 저장된 경로에 추가
       setSavedRoutes((prevSavedRoutes) => [
         ...prevSavedRoutes,
         currentRouteCoordinates,
       ]);
-      
-      // recording 중단 로그 출력
-      console.log('Recording stopped. Saved route:', currentRouteCoordinates);
+
+      // Send location data to the server
+      fetch('http://your_server_ip:3000/root', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          lat: currentRouteCoordinates[currentRouteCoordinates.length - 1].latitude,
+          lon: currentRouteCoordinates[currentRouteCoordinates.length - 1].longitude,
+          users_email: 'sex', // Modify this to the appropriate user email
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Location data sent to the server:', data);
+        })
+        .catch((error) => {
+          console.error('Error sending location data:', error);
+        });
     } else {
-      // 경로가 충분하지 않아 저장되지 않은 경우에 대한 로그 출력
       console.log('Recording stopped. Route too short to save.');
     }
   };

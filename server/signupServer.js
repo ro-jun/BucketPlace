@@ -8,6 +8,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+db.connect((err) => {
+    if (err) {
+      console.error('Database connection error:', err);
+    } else {
+      console.log('Connected to the database');
+    }
+  });
+
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -43,6 +51,32 @@ app.post('/login', (req, res) => {
         } else {
             res.send({ success: false, message: 'Invalid email or password!' });
         }
+    });
+});
+
+app.post('/root', (req, res) => {
+    console.log("root request recevied:", req.body);
+    const { lat, lon, users_email } = req.body;
+
+    const query = "INSERT INTO root (lat, lon, users_email) VALUES (?, ?, ?)";
+    db.query(query, [lat, lon, users_email], (err, results) => {
+        if(err) {
+            return res.status(400).send({error: err.message});
+        }
+        res.send({ message: 'root registered successfully!'});
+    });
+});
+
+app.post('/marker', (req, res) => {
+    console.log("root request recevied:", req.body);
+    const { title, lat, lon, root_num } = req.body;
+
+    const query = "INSERT INTO root (title, lat, lon, root_num) VALUES (?, ?, ?)";
+    db.query(query, [title, lat, lon, root_num], (err, results) => {
+        if(err) {
+            return res.status(400).send({error: err.message});
+        }
+        res.send({ message: 'marker registered successfully!'});
     });
 });
 
